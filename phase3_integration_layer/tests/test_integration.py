@@ -98,10 +98,11 @@ def test_prompt_builder_includes_preferences_and_candidates():
     preferences = _preferences()
     filtered = FilterService().filter(store, preferences).restaurants
     candidates = ContextFormatter().format_many(filtered)
-    prompt = PromptBuilder().build(preferences, candidates, [])
+    prompt = PromptBuilder().build(preferences, candidates, [], top_n=5)
     assert "Bangalore" in prompt.user_prompt
     assert "Alpha" in prompt.user_prompt
     assert "recommendations" in prompt.user_prompt
+    assert "exactly 5 distinct restaurants" in prompt.user_prompt
     assert prompt.estimated_tokens > 0
 
 

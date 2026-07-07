@@ -21,6 +21,7 @@ def run_integration(
     *,
     max_candidates: int = DEFAULT_MAX_CANDIDATES,
     max_prompt_tokens: int = DEFAULT_MAX_PROMPT_TOKENS,
+    top_n: int = 5,
 ) -> IntegrationResult:
     """Filter restaurants, select candidates, and build an LLM-ready prompt."""
     filter_service = FilterService()
@@ -32,11 +33,16 @@ def run_integration(
     selected = selector.select(filter_result.restaurants)
     candidates = formatter.format_many(selected)
 
-    prompt = prompt_builder.build(preferences, candidates, filter_result.relaxed_filters)
+    prompt = prompt_builder.build(preferences, candidates, filter_result.relaxed_filters, top_n=top_n)
 
     while candidates and prompt.estimated_tokens > max_prompt_tokens:
         candidates = candidates[:-5]
-        prompt = prompt_builder.build(preferences, candidates, filter_result.relaxed_filters)
+        prompt = prompt_builder.build(
+            preferences,
+            candidates,
+            filter_result.relaxed_filters,
+            top_n=top_n,
+        )
 
     return IntegrationResult(
         preferences=preferences.model_dump(),

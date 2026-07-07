@@ -6,6 +6,7 @@ from typing import Union
 from . import phase_imports as _phase_imports  # noqa: F401
 from .fallback_ranker import FallbackRanker
 from .models import RecommendationResponse
+from .normalize import normalize_recommendations
 from .openai_client import OpenAIClientError, OpenAIRecommendationClient
 from .phase_imports import (
     IntegrationResult,
@@ -38,7 +39,11 @@ def generate_recommendations(
     try:
         client = OpenAIRecommendationClient(api_key=api_key, model=model)
         response = client.recommend(integration_result.prompt)
-        response = _limit_recommendations(response, top_n)
+        response = normalize_recommendations(
+            response,
+            integration_result,
+            top_n=top_n,
+        )
         response.source = "openai"
         return response
     except (OpenAIClientError, ValueError):
@@ -60,6 +65,7 @@ def run_recommendation_pipeline(
         preferences,
         store,
         max_candidates=max_candidates,
+        top_n=top_n,
     )
     return generate_recommendations(
         integration_result,
@@ -72,11 +78,3 @@ def run_recommendation_pipeline(
 
 def load_integration_result(path: Union[str, Path]) -> IntegrationResult:
     return IntegrationResult.model_validate_json(Path(path).read_text(encoding="utf-8"))
-
-
-def _limit_recommendations(
-    response: RecommendationResponse,
-    top_n: int,
-) -> RecommendationResponse:
-    trimmed = response.recommendations[:top_n]
-    return response.model_copy(update={"recommendations": trimmed})

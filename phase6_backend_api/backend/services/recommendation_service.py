@@ -34,7 +34,7 @@ class RecommendationService:
         preferences = validate_preferences(request.model_dump())
         store = self._restaurants._get_store()
 
-        integration = run_integration(preferences, store)
+        integration = run_integration(preferences, store, top_n=top_n)
         if integration.total_matches == 0 or not integration.candidates:
             raise NoMatchesError()
 

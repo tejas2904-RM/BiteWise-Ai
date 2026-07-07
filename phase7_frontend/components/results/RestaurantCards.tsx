@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Heart, MapPin, Star } from "lucide-react";
 import type { Recommendation } from "@/lib/types";
 import { formatCost } from "@/lib/storage";
-import { restaurantImage } from "@/lib/images";
+import { restaurantImageForId } from "@/lib/images";
 
 function Rating({ value }: { value: number }) {
   return (
@@ -21,7 +21,7 @@ export function RestaurantCardFeatured({ item }: { item: Recommendation }) {
     <article className="card overflow-hidden">
       <div className="relative h-64 w-full">
         <Image
-          src={restaurantImage(item.rank)}
+          src={restaurantImageForId(item.restaurant_id)}
           alt={item.name}
           fill
           className="object-cover"
@@ -64,7 +64,7 @@ export function RestaurantCardMedium({ item }: { item: Recommendation }) {
     <article className="card overflow-hidden">
       <div className="relative h-48 w-full">
         <Image
-          src={restaurantImage(item.rank + 1)}
+          src={restaurantImageForId(item.restaurant_id)}
           alt={item.name}
           fill
           className="object-cover"
@@ -96,7 +96,7 @@ export function RestaurantCardCompact({ item }: { item: Recommendation }) {
     <article className="card flex flex-col gap-4 p-4 md:flex-row md:items-center">
       <div className="relative h-28 w-full shrink-0 overflow-hidden rounded-xl md:h-24 md:w-32">
         <Image
-          src={restaurantImage(item.rank + 2)}
+          src={restaurantImageForId(item.restaurant_id)}
           alt={item.name}
           fill
           className="object-cover"

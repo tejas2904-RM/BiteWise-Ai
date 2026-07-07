@@ -9,3 +9,11 @@ export const RESTAURANT_IMAGES = [
 export function restaurantImage(index: number): string {
   return RESTAURANT_IMAGES[index % RESTAURANT_IMAGES.length];
 }
+
+export function restaurantImageForId(restaurantId: string): string {
+  let hash = 0;
+  for (let i = 0; i < restaurantId.length; i += 1) {
+    hash = (hash + restaurantId.charCodeAt(i)) % RESTAURANT_IMAGES.length;
+  }
+  return RESTAURANT_IMAGES[hash];
+}

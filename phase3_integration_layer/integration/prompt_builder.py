@@ -56,6 +56,8 @@ class PromptBuilder:
         preferences: UserPreferences,
         candidates: list[CandidateRestaurant],
         relaxed_filters: list[str],
+        *,
+        top_n: int = 5,
     ) -> LLMPrompt:
         candidate_payload = [candidate.model_dump(exclude_none=True) for candidate in candidates]
         notes = preferences.additional_notes or "None"
@@ -78,9 +80,10 @@ Candidate restaurants (JSON):
 {json.dumps(candidate_payload, indent=2)}
 
 Task:
-1. Rank the best 3 to 5 restaurants for this user.
-2. Explain why each recommendation fits the preferences and notes.
-3. Provide a short summary comparing the top options.
+1. Rank exactly {top_n} distinct restaurants for this user.
+2. Use each restaurant_id from the candidate list at most once.
+3. Explain why each recommendation fits the preferences and notes.
+4. Provide a short summary comparing the top options.
 
 Return JSON with this schema:
 {json.dumps(OUTPUT_SCHEMA, indent=2)}"""

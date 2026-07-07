@@ -14,8 +14,9 @@ class FallbackRanker:
         self.top_n = top_n
 
     def rank(self, integration_result: IntegrationResult) -> RecommendationResponse:
+        unique_candidates = _unique_candidates(integration_result.candidates)
         candidates = sorted(
-            integration_result.candidates,
+            unique_candidates,
             key=lambda item: (item.rating, item.votes or 0),
             reverse=True,
         )[: self.top_n]
@@ -78,3 +79,17 @@ def _format_budget(value: object) -> str:
     if text.startswith("BudgetTier."):
         return text.split(".", 1)[1].lower()
     return text
+
+
+def _unique_candidates(candidates: list[CandidateRestaurant]) -> list[CandidateRestaurant]:
+    unique: list[CandidateRestaurant] = []
+    seen_ids: set[str] = set()
+    seen_names: set[str] = set()
+    for candidate in candidates:
+        name_key = candidate.name.strip().lower()
+        if candidate.id in seen_ids or name_key in seen_names:
+            continue
+        seen_ids.add(candidate.id)
+        seen_names.add(name_key)
+        unique.append(candidate)
+    return unique
