@@ -16,13 +16,16 @@ app = FastAPI(
 )
 
 settings = get_settings()
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=settings["cors_origins"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+cors_kwargs: dict[str, object] = {
+    "allow_origins": settings["cors_origins"],
+    "allow_credentials": True,
+    "allow_methods": ["*"],
+    "allow_headers": ["*"],
+}
+if settings["cors_origin_regex"]:
+    cors_kwargs["allow_origin_regex"] = settings["cors_origin_regex"]
+
+app.add_middleware(CORSMiddleware, **cors_kwargs)
 
 register_exception_handlers(app)
 app.include_router(router)

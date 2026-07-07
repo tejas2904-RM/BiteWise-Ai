@@ -5,8 +5,9 @@ import type {
   RestaurantDetail,
   SearchHistoryItem,
 } from "./types";
+import { getApiUrl } from "./env";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://127.0.0.1:8000";
+const API_URL = getApiUrl();
 
 export class ApiError extends Error {
   status: number;

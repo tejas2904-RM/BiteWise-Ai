@@ -2,8 +2,12 @@
   "name": "bitewise-frontend",
   "version": "1.0.0",
   "private": true,
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node ../phase9_frontend_deploy/scripts/verify_env.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

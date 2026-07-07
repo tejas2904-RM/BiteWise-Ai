@@ -50,12 +50,26 @@ def resolve_data_path(raw: str | Path | None = None) -> Path:
     return candidates[0]
 
 
+VERCEL_PREVIEW_ORIGIN_REGEX = r"https://.*\.vercel\.app"
+
+
+def _truthy(value: str | None) -> bool:
+    return (value or "").strip().lower() in {"1", "true", "yes", "on"}
+
+
 @lru_cache
 def get_settings() -> dict[str, object]:
     cors_raw = os.getenv("CORS_ORIGINS", "http://localhost:3000")
+    cors_origins = [origin.strip() for origin in cors_raw.split(",") if origin.strip()]
+
+    cors_origin_regex = os.getenv("CORS_ORIGIN_REGEX", "").strip() or None
+    if _truthy(os.getenv("CORS_ALLOW_VERCEL_PREVIEWS")):
+        cors_origin_regex = cors_origin_regex or VERCEL_PREVIEW_ORIGIN_REGEX
+
     return {
         "data_path": resolve_data_path(),
-        "cors_origins": [origin.strip() for origin in cors_raw.split(",") if origin.strip()],
+        "cors_origins": cors_origins,
+        "cors_origin_regex": cors_origin_regex,
         "api_host": os.getenv("API_HOST", "0.0.0.0"),
         "api_port": int(os.getenv("PORT", os.getenv("API_PORT", "8000"))),
     }

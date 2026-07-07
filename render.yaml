@@ -20,6 +20,8 @@ services:
       - key: DATA_PATH
         value: ../phase1_data_ingestion/data/processed/restaurants.parquet
       - key: CORS_ORIGINS
-        value: https://your-app.vercel.app,http://localhost:3000
+        value: https://bitewise-ai.vercel.app,http://localhost:3000
+      - key: CORS_ALLOW_VERCEL_PREVIEWS
+        value: "true"
       - key: OPENAI_API_KEY
         sync: false
