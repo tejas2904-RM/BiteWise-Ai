@@ -1,0 +1,35 @@
+{
+  "summary": "The top choices for Chinese cuisine in Bangalore within a medium budget are ECHOES Koramangala, Baar Union, and Pin Me Down. ECHOES Koramangala stands out with the highest rating and a vibrant atmosphere, while Baar Union offers a unique bar experience with a solid rating. Pin Me Down provides a casual dining option with a diverse menu, making it a great choice for those looking for variety. All options meet the user's preferences for cuisine, budget, and location.",
+  "recommendations": [
+    {
+      "rank": 1,
+      "restaurant_id": "95df78b0ebc1e43b",
+      "name": "ECHOES Koramangala",
+      "cuisine": "Chinese",
+      "rating": 4.7,
+      "estimated_cost": 750.0,
+      "explanation": "ECHOES Koramangala offers a high rating of 4.7 and serves a variety of Chinese dishes. It fits perfectly within the medium budget tier and is located in a popular area of Bangalore, making it an ideal choice for the user."
+    },
+    {
+      "rank": 2,
+      "restaurant_id": "da92a7ef6833a283",
+      "name": "Baar Union",
+      "cuisine": "Chinese",
+      "rating": 4.6,
+      "estimated_cost": 850.0,
+      "explanation": "Baar Union has a rating of 4.6 and features a mix of Asian and Chinese cuisines. It provides a lively bar atmosphere, which can be appealing for casual dining. The cost is slightly higher but still within the medium budget tier."
+    },
+    {
+      "rank": 3,
+      "restaurant_id": "879427fa9a64149c",
+      "name": "Pin Me Down",
+      "cuisine": "Chinese",
+      "rating": 4.5,
+      "estimated_cost": 800.0,
+      "explanation": "Pin Me Down offers a diverse menu that includes Chinese cuisine and has a solid rating of 4.5. It is also within the medium budget range and provides a casual dining experience, making it a good option for variety."
+    }
+  ],
+  "source": "openai",
+  "preferences": null,
+  "total_matches": null
+}

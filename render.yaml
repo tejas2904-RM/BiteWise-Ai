@@ -1,0 +1,25 @@
+# Phase 8: BiteWise API on Render (Blueprint)
+# https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: bitewise-api
+    runtime: python
+    plan: free
+    rootDir: phase6_backend_api
+    buildCommand: >-
+      pip install -r requirements.txt &&
+      python ../phase8_backend_deploy/scripts/ensure_data.py
+    startCommand: uvicorn backend.api.app:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.9"
+      - key: OPENAI_MODEL
+        value: gpt-4o-mini
+      - key: DATA_PATH
+        value: ../phase1_data_ingestion/data/processed/restaurants.parquet
+      - key: CORS_ORIGINS
+        value: https://your-app.vercel.app,http://localhost:3000
+      - key: OPENAI_API_KEY
+        sync: false

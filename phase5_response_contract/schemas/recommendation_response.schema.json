@@ -1,0 +1,178 @@
+{
+  "$defs": {
+    "BudgetTier": {
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "title": "BudgetTier",
+      "type": "string"
+    },
+    "Recommendation": {
+      "description": "Single ranked restaurant recommendation for display.",
+      "properties": {
+        "rank": {
+          "minimum": 1,
+          "title": "Rank",
+          "type": "integer"
+        },
+        "restaurant_id": {
+          "minLength": 1,
+          "title": "Restaurant Id",
+          "type": "string"
+        },
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "cuisine": {
+          "minLength": 1,
+          "title": "Cuisine",
+          "type": "string"
+        },
+        "rating": {
+          "maximum": 5.0,
+          "minimum": 0.0,
+          "title": "Rating",
+          "type": "number"
+        },
+        "estimated_cost": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Estimated Cost"
+        },
+        "explanation": {
+          "minLength": 1,
+          "title": "Explanation",
+          "type": "string"
+        }
+      },
+      "required": [
+        "rank",
+        "restaurant_id",
+        "name",
+        "cuisine",
+        "rating",
+        "estimated_cost",
+        "explanation"
+      ],
+      "title": "Recommendation",
+      "type": "object"
+    },
+    "UserPreferences": {
+      "description": "Validated user preferences included in API responses.",
+      "properties": {
+        "location": {
+          "minLength": 1,
+          "title": "Location",
+          "type": "string"
+        },
+        "budget": {
+          "$ref": "#/$defs/BudgetTier"
+        },
+        "cuisine": {
+          "minLength": 1,
+          "title": "Cuisine",
+          "type": "string"
+        },
+        "min_rating": {
+          "maximum": 5.0,
+          "minimum": 0.0,
+          "title": "Min Rating",
+          "type": "number"
+        },
+        "additional_notes": {
+          "anyOf": [
+            {
+              "maxLength": 500,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Additional Notes"
+        }
+      },
+      "required": [
+        "location",
+        "budget",
+        "cuisine",
+        "min_rating"
+      ],
+      "title": "UserPreferences",
+      "type": "object"
+    }
+  },
+  "description": "Successful recommendation API response (Phase 5 / 6 / 7 contract).",
+  "properties": {
+    "summary": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Summary"
+    },
+    "recommendations": {
+      "items": {
+        "$ref": "#/$defs/Recommendation"
+      },
+      "maxItems": 10,
+      "minItems": 1,
+      "title": "Recommendations",
+      "type": "array"
+    },
+    "source": {
+      "default": "openai",
+      "enum": [
+        "openai",
+        "fallback"
+      ],
+      "title": "Source",
+      "type": "string"
+    },
+    "preferences": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/UserPreferences"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "total_matches": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Total Matches"
+    }
+  },
+  "required": [
+    "recommendations"
+  ],
+  "title": "RecommendationResponse",
+  "type": "object"
+}

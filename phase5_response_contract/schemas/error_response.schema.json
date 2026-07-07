@@ -1,0 +1,99 @@
+{
+  "$defs": {
+    "ErrorCode": {
+      "enum": [
+        "validation_error",
+        "no_matches",
+        "openai_error",
+        "server_error"
+      ],
+      "title": "ErrorCode",
+      "type": "string"
+    },
+    "ErrorDetails": {
+      "properties": {
+        "errors": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/FieldError"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Errors"
+        },
+        "extra": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Extra"
+        }
+      },
+      "title": "ErrorDetails",
+      "type": "object"
+    },
+    "FieldError": {
+      "properties": {
+        "field": {
+          "title": "Field",
+          "type": "string"
+        },
+        "message": {
+          "title": "Message",
+          "type": "string"
+        }
+      },
+      "required": [
+        "field",
+        "message"
+      ],
+      "title": "FieldError",
+      "type": "object"
+    }
+  },
+  "description": "Standard error payload for Phase 6 API and Phase 7 UI.",
+  "properties": {
+    "message": {
+      "minLength": 1,
+      "title": "Message",
+      "type": "string"
+    },
+    "code": {
+      "$ref": "#/$defs/ErrorCode"
+    },
+    "details": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ErrorDetails"
+        },
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Details"
+    }
+  },
+  "required": [
+    "message",
+    "code"
+  ],
+  "title": "ErrorResponse",
+  "type": "object"
+}

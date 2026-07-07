@@ -1,0 +1,71 @@
+{
+  "$defs": {
+    "BudgetTier": {
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "title": "BudgetTier",
+      "type": "string"
+    }
+  },
+  "description": "POST /api/recommendations request body (Phase 6 input).",
+  "properties": {
+    "location": {
+      "examples": [
+        "Bangalore"
+      ],
+      "minLength": 1,
+      "title": "Location",
+      "type": "string"
+    },
+    "budget": {
+      "$ref": "#/$defs/BudgetTier",
+      "examples": [
+        "medium"
+      ]
+    },
+    "cuisine": {
+      "examples": [
+        "Chinese"
+      ],
+      "minLength": 1,
+      "title": "Cuisine",
+      "type": "string"
+    },
+    "min_rating": {
+      "examples": [
+        4.0
+      ],
+      "maximum": 5.0,
+      "minimum": 0.0,
+      "title": "Min Rating",
+      "type": "number"
+    },
+    "additional_notes": {
+      "anyOf": [
+        {
+          "maxLength": 500,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "examples": [
+        "family-friendly, quick service"
+      ],
+      "title": "Additional Notes"
+    }
+  },
+  "required": [
+    "location",
+    "budget",
+    "cuisine",
+    "min_rating"
+  ],
+  "title": "RecommendationRequest",
+  "type": "object"
+}

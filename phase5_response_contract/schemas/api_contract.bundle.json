@@ -1,0 +1,412 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BiteWise API Contract",
+  "schemas": {
+    "recommendation_request": {
+      "$defs": {
+        "BudgetTier": {
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ],
+          "title": "BudgetTier",
+          "type": "string"
+        }
+      },
+      "description": "POST /api/recommendations request body (Phase 6 input).",
+      "properties": {
+        "location": {
+          "examples": [
+            "Bangalore"
+          ],
+          "minLength": 1,
+          "title": "Location",
+          "type": "string"
+        },
+        "budget": {
+          "$ref": "#/$defs/BudgetTier",
+          "examples": [
+            "medium"
+          ]
+        },
+        "cuisine": {
+          "examples": [
+            "Chinese"
+          ],
+          "minLength": 1,
+          "title": "Cuisine",
+          "type": "string"
+        },
+        "min_rating": {
+          "examples": [
+            4.0
+          ],
+          "maximum": 5.0,
+          "minimum": 0.0,
+          "title": "Min Rating",
+          "type": "number"
+        },
+        "additional_notes": {
+          "anyOf": [
+            {
+              "maxLength": 500,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "examples": [
+            "family-friendly, quick service"
+          ],
+          "title": "Additional Notes"
+        }
+      },
+      "required": [
+        "location",
+        "budget",
+        "cuisine",
+        "min_rating"
+      ],
+      "title": "RecommendationRequest",
+      "type": "object"
+    },
+    "recommendation": {
+      "description": "Single ranked restaurant recommendation for display.",
+      "properties": {
+        "rank": {
+          "minimum": 1,
+          "title": "Rank",
+          "type": "integer"
+        },
+        "restaurant_id": {
+          "minLength": 1,
+          "title": "Restaurant Id",
+          "type": "string"
+        },
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "cuisine": {
+          "minLength": 1,
+          "title": "Cuisine",
+          "type": "string"
+        },
+        "rating": {
+          "maximum": 5.0,
+          "minimum": 0.0,
+          "title": "Rating",
+          "type": "number"
+        },
+        "estimated_cost": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Estimated Cost"
+        },
+        "explanation": {
+          "minLength": 1,
+          "title": "Explanation",
+          "type": "string"
+        }
+      },
+      "required": [
+        "rank",
+        "restaurant_id",
+        "name",
+        "cuisine",
+        "rating",
+        "estimated_cost",
+        "explanation"
+      ],
+      "title": "Recommendation",
+      "type": "object"
+    },
+    "recommendation_response": {
+      "$defs": {
+        "BudgetTier": {
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ],
+          "title": "BudgetTier",
+          "type": "string"
+        },
+        "Recommendation": {
+          "description": "Single ranked restaurant recommendation for display.",
+          "properties": {
+            "rank": {
+              "minimum": 1,
+              "title": "Rank",
+              "type": "integer"
+            },
+            "restaurant_id": {
+              "minLength": 1,
+              "title": "Restaurant Id",
+              "type": "string"
+            },
+            "name": {
+              "minLength": 1,
+              "title": "Name",
+              "type": "string"
+            },
+            "cuisine": {
+              "minLength": 1,
+              "title": "Cuisine",
+              "type": "string"
+            },
+            "rating": {
+              "maximum": 5.0,
+              "minimum": 0.0,
+              "title": "Rating",
+              "type": "number"
+            },
+            "estimated_cost": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                }
+              ],
+              "title": "Estimated Cost"
+            },
+            "explanation": {
+              "minLength": 1,
+              "title": "Explanation",
+              "type": "string"
+            }
+          },
+          "required": [
+            "rank",
+            "restaurant_id",
+            "name",
+            "cuisine",
+            "rating",
+            "estimated_cost",
+            "explanation"
+          ],
+          "title": "Recommendation",
+          "type": "object"
+        },
+        "UserPreferences": {
+          "description": "Validated user preferences included in API responses.",
+          "properties": {
+            "location": {
+              "minLength": 1,
+              "title": "Location",
+              "type": "string"
+            },
+            "budget": {
+              "$ref": "#/$defs/BudgetTier"
+            },
+            "cuisine": {
+              "minLength": 1,
+              "title": "Cuisine",
+              "type": "string"
+            },
+            "min_rating": {
+              "maximum": 5.0,
+              "minimum": 0.0,
+              "title": "Min Rating",
+              "type": "number"
+            },
+            "additional_notes": {
+              "anyOf": [
+                {
+                  "maxLength": 500,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Additional Notes"
+            }
+          },
+          "required": [
+            "location",
+            "budget",
+            "cuisine",
+            "min_rating"
+          ],
+          "title": "UserPreferences",
+          "type": "object"
+        }
+      },
+      "description": "Successful recommendation API response (Phase 5 / 6 / 7 contract).",
+      "properties": {
+        "summary": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Summary"
+        },
+        "recommendations": {
+          "items": {
+            "$ref": "#/$defs/Recommendation"
+          },
+          "maxItems": 10,
+          "minItems": 1,
+          "title": "Recommendations",
+          "type": "array"
+        },
+        "source": {
+          "default": "openai",
+          "enum": [
+            "openai",
+            "fallback"
+          ],
+          "title": "Source",
+          "type": "string"
+        },
+        "preferences": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/UserPreferences"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "total_matches": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Total Matches"
+        }
+      },
+      "required": [
+        "recommendations"
+      ],
+      "title": "RecommendationResponse",
+      "type": "object"
+    },
+    "error_response": {
+      "$defs": {
+        "ErrorCode": {
+          "enum": [
+            "validation_error",
+            "no_matches",
+            "openai_error",
+            "server_error"
+          ],
+          "title": "ErrorCode",
+          "type": "string"
+        },
+        "ErrorDetails": {
+          "properties": {
+            "errors": {
+              "anyOf": [
+                {
+                  "items": {
+                    "$ref": "#/$defs/FieldError"
+                  },
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Errors"
+            },
+            "extra": {
+              "anyOf": [
+                {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Extra"
+            }
+          },
+          "title": "ErrorDetails",
+          "type": "object"
+        },
+        "FieldError": {
+          "properties": {
+            "field": {
+              "title": "Field",
+              "type": "string"
+            },
+            "message": {
+              "title": "Message",
+              "type": "string"
+            }
+          },
+          "required": [
+            "field",
+            "message"
+          ],
+          "title": "FieldError",
+          "type": "object"
+        }
+      },
+      "description": "Standard error payload for Phase 6 API and Phase 7 UI.",
+      "properties": {
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "code": {
+          "$ref": "#/$defs/ErrorCode"
+        },
+        "details": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ErrorDetails"
+            },
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Details"
+        }
+      },
+      "required": [
+        "message",
+        "code"
+      ],
+      "title": "ErrorResponse",
+      "type": "object"
+    }
+  }
+}
